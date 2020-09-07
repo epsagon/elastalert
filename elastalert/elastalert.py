@@ -1066,6 +1066,10 @@ class ElastAlerter(object):
         :param endtime: The latest timestamp to query.
         :return: The number of matches that the rule produced.
         """
+
+        epsagon.label('rule_name', rule.get('name', ''))
+        epsagon.label('queried_index', rule.get('index', ''))
+
         run_start = time.time()
         self.thread_data.current_es = self.es_clients.setdefault(
             rule["name"], elasticsearch_client(rule)
