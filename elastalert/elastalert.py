@@ -21,6 +21,7 @@ from socket import error
 
 import dateutil.tz
 import pytz
+from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.schedulers.background import BackgroundScheduler
 from croniter import croniter
 from elasticsearch.exceptions import ConnectionError
@@ -59,6 +60,7 @@ from .util import unix_to_dt
 TOKEN = os.environ.get("EPSAGON_TOKEN")
 APP_NAME = os.environ.get("EPSAGON_APP_NAME")
 COLLECTOR_URL = os.environ.get("EPSAGON_COLLECTOR_URL")
+WORKER_COUNT = int(os.environ.get('WORKER_COUNT', '50'))
 
 epsagon.init(
     token=TOKEN, app_name=APP_NAME, metadata_only=False, collector_url=COLLECTOR_URL,
@@ -213,7 +215,9 @@ class ElastAlerter(object):
         )
         self.thread_data.num_hits = 0
         self.thread_data.num_dupes = 0
-        self.scheduler = BackgroundScheduler()
+
+        executors = {'default': ThreadPoolExecutor(WORKER_COUNT)}
+        self.scheduler = BackgroundScheduler(executors=executors)
         self.string_multi_field_name = self.conf.get("string_multi_field_name", False)
         self.add_metadata_alert = self.conf.get("add_metadata_alert", False)
         self.show_disabled_rules = self.conf.get("show_disabled_rules", True)
