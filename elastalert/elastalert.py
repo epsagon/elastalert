@@ -21,8 +21,7 @@ from socket import error
 
 import dateutil.tz
 import pytz
-from apscheduler.executors.pool import ThreadPoolExecutor
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from croniter import croniter
 from elasticsearch.exceptions import ConnectionError
 from elasticsearch.exceptions import ElasticsearchException
@@ -216,8 +215,7 @@ class ElastAlerter(object):
         self.thread_data.num_hits = 0
         self.thread_data.num_dupes = 0
 
-        executors = {'default': ThreadPoolExecutor(WORKER_COUNT)}
-        self.scheduler = BackgroundScheduler(executors=executors)
+        self.scheduler = AsyncIOScheduler()
         self.string_multi_field_name = self.conf.get("string_multi_field_name", False)
         self.add_metadata_alert = self.conf.get("add_metadata_alert", False)
         self.show_disabled_rules = self.conf.get("show_disabled_rules", True)
