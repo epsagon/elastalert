@@ -176,7 +176,7 @@ def ea():
     conf['rules_loader'] = mock_rule_loader(conf)
     elastalert.elastalert.elasticsearch_client = mock_es_client
     with mock.patch('elastalert.elastalert.load_conf') as load_conf:
-        with mock.patch('elastalert.elastalert.AsyncIOScheduler'):
+        with mock.patch('elastalert.elastalert.BackgroundScheduler'):
             load_conf.return_value = conf
             conf['rules_loader'].load.return_value = rules
             conf['rules_loader'].get_hashes.return_value = {}
@@ -230,7 +230,7 @@ def ea_sixsix():
     elastalert.elastalert.elasticsearch_client = mock_es_sixsix_client
     elastalert.util.elasticsearch_client = mock_es_sixsix_client
     with mock.patch('elastalert.elastalert.load_conf') as load_conf:
-        with mock.patch('elastalert.elastalert.AsyncIOScheduler'):
+        with mock.patch('elastalert.elastalert.BackgroundScheduler'):
             load_conf.return_value = conf
             conf['rules_loader'].load.return_value = rules
             conf['rules_loader'].get_hashes.return_value = {}
