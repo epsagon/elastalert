@@ -53,5 +53,6 @@ setup(
         "python-magic>=0.4.15",
         "cffi>=1.11.5",
         "epsagon==1.52.2",
+        "tzlocal<3.0",
     ],
 )
