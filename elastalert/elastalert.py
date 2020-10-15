@@ -1061,7 +1061,7 @@ class ElastAlerter(object):
             "Enhanced filter with {} terms: {}".format(listname, str(query_str_filter))
         )
 
-    @epsagon.python_wrapper(name="elastalert-run-rule")
+    @epsagon.python_wrapper()
     def run_rule(self, rule, endtime, starttime=None):
         """ Run a rule for a given time period, including querying and alerting on results.
 
